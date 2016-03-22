@@ -31,7 +31,7 @@ public class GUIMain extends JPanel implements ActionListener{
 	protected JScrollPane inputScroll;
 	DistractGenerator dg;
 	public GUIMain(){
-		label = new JLabel("Input text");
+		label = new JLabel("<html>Input text <br!> or AVL code</html>");
 		text = new JTextArea();
 		search = new JButton("Search");
 		export = new JButton("Export");
@@ -45,7 +45,7 @@ public class GUIMain extends JPanel implements ActionListener{
 	    inputScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		this.setLayout(null);
-		label.setBounds(10,10, 150, 30);
+		label.setBounds(10,10, 150, 60);
 		inputScroll.setBounds(100,10,150,60);
 		search.setBounds(250, 10, 80, 30);
 		export.setBounds(300,900, 200, 30);
