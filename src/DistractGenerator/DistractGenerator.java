@@ -14,10 +14,13 @@ import java.util.TreeSet;
 public class DistractGenerator {
 	private ArrayList<TestWord> testList;
 	private TreeMap<String, String> AVLMap;
+	private TreeMap<String, String> AVLCodeMap;
+	
 	String output;
 	public void read(){
 		testList = new ArrayList<TestWord>();
 		AVLMap = new TreeMap<String,String>();
+		AVLCodeMap = new TreeMap<String,String>();
 		try {
 			File file = new File("input.txt");
             Scanner in = new Scanner(file);
@@ -27,7 +30,6 @@ public class DistractGenerator {
             String distractor;
             String temp;
             int rank;
-
             String cat2fl;
             String cat3fl;
             String cat3ll;
@@ -38,6 +40,8 @@ public class DistractGenerator {
             	original = in.next();
             	pos = in.next();
             	distractor = in.next();
+            	original = original.toLowerCase();
+            	distractor =distractor.toLowerCase();
             	while(true){
             		temp = in.next();
             		if(temp.matches("[0-9]+")){
@@ -47,8 +51,7 @@ public class DistractGenerator {
             		distractor += " " + temp;
             	}            	
             	AVLMap.put(distractor, avlcode);
-//            	System.out.println(distractor);
-//            	rank = in.nextInt();
+            	AVLCodeMap.put(avlcode, distractor);
             	cat2fl = in.next();
             	cat3fl = in.next();
             	cat3ll = in.next();
@@ -77,35 +80,39 @@ public class DistractGenerator {
 			}
 		});			
 	}
-	public List<TestWord> generate(String word){
-		output = "Original Word:" + word + "\n";
+	public String getOutput(){
+		return output;
+	}
+	public void generate(String word){
+		String[] inputList = word.split("\n"); 
+		output = "";
 		List<TestWord> result = new ArrayList<TestWord>();
-		TestWord target = null;
-		for(TestWord t: testList){
-			if(t.getWord().equals(word)){
-				target = t;
-				
-				for(TestWord t2: testList){
-					
-					if(!(t2.getWord().equals(t.getWord())) && t.getPos().equals(t2.getPos())){
-						int lengthDifference = Math.abs(t2.getDistractor().length() - t.getDistractor().length());
-						if(lengthDifference <= 1)
-							t.checkWord(t2);
-					}					
+		for(String w:inputList){
+			if(w.substring(0, 3).equals("AVL")){
+				w = AVLCodeMap.get(w);
+			}			
+			output += "Original Word:" + w + "\n";
+			TestWord target = null;
+			for(TestWord t: testList){
+				if(t.getWord().equals(w)){
+					target = t;
+					for(TestWord t2: testList){
+						if(!(t2.getWord().equals(t.getWord())) && t.getPos().equals(t2.getPos())){
+							int lengthDifference = Math.abs(t2.getDistractor().length() - t.getDistractor().length());
+							if(lengthDifference <= 1)
+								t.checkWord(t2);
+						}					
+					}
+					result.add(target);
+					target.prioritize();	
+					output += target.toString();
 				}
-				result.add(target);
-				target.prioritize();
-//				System.out.println("------------------------------------\n");
-//				System.out.println(output + target.toString());
-
-				output += target.toString();
-			}
-		}		
-		if(target ==null){
-			System.out.println( "Can't find the word" );
-			return null;
-		}		
-		return result;
+			}		
+			if(target ==null){
+				System.out.println( "Can't find the word: " + w);
+				output += "Can't find the word " + w + "\n";				
+			}		
+		}
 	}
 	public void exportToCSV(String fileName){
 		ExportFile csv = new ExportFile(fileName,output);

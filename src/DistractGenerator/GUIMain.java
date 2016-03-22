@@ -23,32 +23,35 @@ import javax.swing.JFrame;
 
 public class GUIMain extends JPanel implements ActionListener{
 	protected JButton search;
-	protected JTextField text;
+	protected JTextArea text;
 	protected JLabel label;
 	protected JTextArea output; 
 	protected JButton export;
-	JScrollPane scroll;
+	protected JScrollPane scroll;
+	protected JScrollPane inputScroll;
 	DistractGenerator dg;
 	public GUIMain(){
 		label = new JLabel("Input text");
-		text = new JTextField(15);
+		text = new JTextArea();
 		search = new JButton("Search");
 		export = new JButton("Export");
 		search.addActionListener(this);
 		export.addActionListener(this);
-		output = new JTextArea(50,50);
+		output = new JTextArea();
 		output.setEditable(false);
+		inputScroll = new JScrollPane(text);
 		scroll = new JScrollPane(output);
 	    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+	    inputScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		this.setLayout(null);
 		label.setBounds(10,10, 150, 30);
-		text.setBounds(100,10,150,30);
+		inputScroll.setBounds(100,10,150,60);
 		search.setBounds(250, 10, 80, 30);
-		export.setBounds(340, 10, 90, 30);
-		scroll.setBounds(10, 60, 800, 800);
+		export.setBounds(300,900, 200, 30);
+		scroll.setBounds(10, 80, 800, 800);
 		add(label);
-		add(text);
+		add(inputScroll);
 		add(search);
 		add(export);
 		add(scroll);
@@ -58,7 +61,7 @@ public class GUIMain extends JPanel implements ActionListener{
         //Create and set up the window.
         JFrame frame = new JFrame("Distract Generator");
         GUIMain gui = new GUIMain();
-        gui.setPreferredSize(new Dimension(830,900));
+        gui.setPreferredSize(new Dimension(830,950));
         frame.setContentPane(gui);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -85,15 +88,12 @@ public class GUIMain extends JPanel implements ActionListener{
 			String input = text.getText();
 			dg = new DistractGenerator();
 			dg.read();
-			List<TestWord> list = dg.generate(input);
-			if(list == null){
+			dg.generate(input);
+			if(dg.getOutput() == null){
 				output.setText("Can not find the word");
 			}
 			else{
-				String result = "";
-				for(TestWord t:list){
-					result += t.toString();
-				}
+				String result = dg.getOutput();				
 				output.setText(result);
 			}
 	       output.setCaretPosition(0);
