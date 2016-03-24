@@ -39,8 +39,14 @@ public abstract class WordList {
 		}
 		String str = "";
 		String endWord = words.get(words.size() -1 );
+		String avl;
+
 		for(String s: words){
-			str += AVLMap.get(s);
+			avl = AVLMap.get(s);
+			if(avl == null)
+				avl = "N/A";
+			
+			str += avl;
 			if(s.equals(endWord))
 				str +=  " \n";
 			else
@@ -69,8 +75,13 @@ public abstract class WordList {
 		}
 		String str = "";
 		String endWord = words.get(words.size() -1 );
+		String avl;
 		for(String s: words){
-			str += AVLMap.get(s);
+			avl = AVLMap.get(s);
+			if(avl == null)
+				avl = "N/A";
+			
+			str += avl;
 			if(s.equals(endWord))
 				str +=  " \n";
 			else

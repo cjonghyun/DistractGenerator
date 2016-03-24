@@ -72,6 +72,9 @@ public class TestWord {
 			return a;
 		return b;
 	}
+	public int getMatches(){
+		return valuedWords.size();
+	}
 	private int sequencing(String s1, String s2){
 		int len1 = s1.length();
 		int len2 = s2.length();
@@ -140,19 +143,19 @@ public class TestWord {
 		temp = "Distractor: " + distractor +" (Rank:" + rank + ")\n";
 		temp += "2FL  \n";
 		temp += cat2fl.getWords();
-		temp += cat2fl.getCodes() + "\n";
+//		temp += cat2fl.getCodes() + "\n";
 		temp += "3FL  \n";
 		temp += cat3fl.getWords() ;
-		temp += cat3fl.getCodes() + "\n";
+//		temp += cat3fl.getCodes() + "\n";
 		temp += "2LL  \n";
 		temp += cat2ll.getWords() ;
-		temp += cat2ll.getCodes() + "\n";
+//		temp += cat2ll.getCodes() + "\n";
 		temp += "3LL \n";
 		temp += cat3ll.getWords() ;
-		temp += cat3ll.getCodes() + "\n";
+//		temp += cat3ll.getCodes() + "\n";
 		temp += "L# \n";
 		temp += catln.getWords() ;
-		temp += catln.getCodes() + "\n";
+//		temp += catln.getCodes() + "\n";
 		temp += "Recommended \n";
 		int max_size = 5;
 		if(valuedWords.size() < 5)
@@ -164,15 +167,20 @@ public class TestWord {
 			else
 				temp += "\n";
 		}
+		String avl;
 		for(int i=0;i<max_size;i++){
-			temp += AVLMap.get(valuedWords.get(i).word);
+			avl = AVLMap.get(valuedWords.get(i).word);
+			if(avl == null)
+				avl = "N/A";
+			temp += avl;
+		
 			if(i<max_size - 1)
 				temp+= ", ";
 			else
 				temp += "\n";
 		}
 		temp+="\n";
-//		temp += "----------------------------------------------------------------------------------------------\n";
+		temp += "----------------------------------------------------------------------------------------------\n";
 		return temp;
 	}
 }

@@ -59,7 +59,7 @@ public class GUIMain extends JPanel implements ActionListener{
 	
 	private static void createAndShowGUI() {
         //Create and set up the window.
-        JFrame frame = new JFrame("Distract Generator");
+        JFrame frame = new JFrame("Distractor Generator");
         GUIMain gui = new GUIMain();
         gui.setPreferredSize(new Dimension(830,950));
         frame.setContentPane(gui);
@@ -101,7 +101,6 @@ public class GUIMain extends JPanel implements ActionListener{
 		if(e.getSource() == export){
             JFileChooser exportFile = new JFileChooser();
             exportFile.showSaveDialog(this);
-            
             int returnVal = exportFile.showSaveDialog(this);
             if(returnVal == JFileChooser.APPROVE_OPTION){
             	String filePath = exportFile.getSelectedFile().getPath();

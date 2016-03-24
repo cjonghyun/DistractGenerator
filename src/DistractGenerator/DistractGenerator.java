@@ -50,8 +50,8 @@ public class DistractGenerator {
             		}
             		distractor += " " + temp;
             	}            	
-            	AVLMap.put(distractor, avlcode);
-            	AVLCodeMap.put(avlcode, distractor);
+            	AVLMap.put(original, avlcode);
+            	AVLCodeMap.put(avlcode, original);
             	cat2fl = in.next();
             	cat3fl = in.next();
             	cat3ll = in.next();
@@ -87,13 +87,27 @@ public class DistractGenerator {
 		String[] inputList = word.split("\n"); 
 		output = "";
 		List<TestWord> result = new ArrayList<TestWord>();
+		boolean checkPos;
+		String pos;
 		for(String w:inputList){
+			pos = "";
+			checkPos = false;
 			if(w.substring(0, 3).equals("AVL")){
 				w = AVLCodeMap.get(w);
 			}			
+			else if(w.contains(".")){
+				pos = w.substring(w.length()-1);
+				w = w.substring(0, w.length() -2);				
+				checkPos = true;
+			}
 			output += "Original Word:" + w + "\n";
 			TestWord target = null;
 			for(TestWord t: testList){
+				if(checkPos){
+					if(!t.getPos().equals(pos)){
+						continue;
+					}
+				}
 				if(t.getWord().equals(w)){
 					target = t;
 					for(TestWord t2: testList){
@@ -105,13 +119,15 @@ public class DistractGenerator {
 					}
 					result.add(target);
 					target.prioritize();	
-					output += target.toString();
+					if(target.getMatches() > 4)
+						output += target.toString();
 				}
 			}		
 			if(target ==null){
 				System.out.println( "Can't find the word: " + w);
 				output += "Can't find the word " + w + "\n";				
-			}		
+			}	
+			output += "************************************************************************************************************************************************\n";
 		}
 	}
 	public void exportToCSV(String fileName){
